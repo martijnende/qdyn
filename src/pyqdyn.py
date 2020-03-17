@@ -476,7 +476,7 @@ class qdyn:
                 cmd.append("test")
             if not test:
                 # Run command
-                call(cmd)
+                return call(cmd)
             else:
                 # Run and suppress stdout
                 with open(os.devnull, "w") as output:
@@ -528,12 +528,12 @@ class qdyn:
         # Output file contents depends on the requested features
         if self.set_dict["FEAT_LOCALISATION"] == 1:
             #cols = ("t", "loc_size", "crack_size", "potcy", "pot_rate", "v", "theta", "theta2", "v_theta_dc", "tau", "x", "x_max", "v_max", "theta_max", "theta2_max", "omeg_max", "tau_max", "x_max", "sigma_max")
-            cols = ("t", "loc_size", "crack_size", "potcy", "pot_rate", "v", "theta", "v_theta_dc", "tau", "x", "x_max", "v_max", "theta_max", "omeg_max", "tau_max", "x_max", "sigma_max")
+            cols = ("t", "loc_size", "crack_size", "potcy", "pot_rate", "v", "theta", "v_theta_dc", "tau", "slip", "x_max", "v_max", "theta_max", "omeg_max", "tau_max", "slip_max", "sigma_max")
         elif self.set_dict["FEAT_TP"] == 1:
-            cols = ("t", "loc_size", "crack_size", "potcy", "pot_rate", "v", "theta", "v_theta_dc", "tau", "x", "x_max", "v_max", "theta_max", "omeg_max", "tau_max", "x_max", "sigma_max", "P", "T", "P_max", "T_max")
+            cols = ("t", "loc_size", "crack_size", "potcy", "pot_rate", "v", "theta", "v_theta_dc", "tau", "slip", "x_max", "v_max", "theta_max", "omeg_max", "tau_max", "slip_max", "sigma_max", "P", "T", "P_max", "T_max")
             nheaders = 8
         else:
-            cols = ("t", "loc_size", "crack_size", "potcy", "pot_rate", "v", "theta", "v_theta_dc", "tau", "x", "x_max", "v_max", "theta_max", "omeg_max", "tau_max", "x_max", "sigma_max")
+            cols = ("t", "loc_size", "crack_size", "potcy", "pot_rate", "v", "theta", "v_theta_dc", "tau", "slip", "x_max", "v_max", "theta_max", "omeg_max", "tau_max", "slip_max", "sigma_max")
 
         # If time series data is requested
         if read_ot:
@@ -558,7 +558,7 @@ class qdyn:
                 cols_ox = ("x", "t", "v", "theta", "dtau", "tau_dot", "slip", "sigma")
 
             # Read snapshot output
-            data_ox = read_csv(filename_ox, header=0, names=cols_ox, delim_whitespace=True, comment="#")
+            data_ox = read_csv(filename_ox, header=None, names=cols_ox, delim_whitespace=True, comment="#")
 
             # Store snapshot data in self.ox
             self.ox = data_ox

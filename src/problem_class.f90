@@ -45,8 +45,7 @@ module problem_class
     type (spectral_mesh_type) :: mesh
     double precision, dimension(:), allocatable :: &
       rhoc, inv_rhoc, beta, eta, k_t, k_p, l, w, inv_w, P, T, P_a, T_a, &
-      Pi, Theta, PiTheta, Omega, &
-      tau_y_prev, phi_dot_prev, phi_prev, P_prev, PiTheta_prev, Theta_prev, &
+      Pi, Theta, PiTheta, Omega, dP_dt, Theta_prev, PiTheta_prev, &
       alpha_th, alpha_hy, Lam, Lam_prime, Lam_T, phi_b, dilat_factor
     double precision :: t_prev=0d0
   end type tp_type
@@ -69,6 +68,24 @@ module problem_class
     integer, dimension(:), allocatable :: iwork
   end type rk45_type
   ! End of features structure
+
+  ! SEISMIC: Runge-Kutta-Fehlberg solver parameters
+  type rk45_2_type
+    double precision, dimension(5) :: t_coeffs
+    double precision, dimension(5) :: error_coeffs
+    double precision, dimension(19) :: coeffs
+    double precision, dimension(:), allocatable :: k1, k2, k3, k4, k5, k6
+    double precision, dimension(:), allocatable :: dy1, dy2, dy3, dy4, dy5, dy6
+    double precision, dimension(:), allocatable :: y_new, h, e
+  end type rk45_2_type
+  ! End of features structure
+
+  ! Structure for (unit)testing
+  type test_type
+    logical :: test_mode = .false.
+    logical :: test_passed = .true.
+  end type test_type
+  ! End of testing structure
 
   type problem_type
     type (mesh_type) :: mesh
@@ -108,6 +125,8 @@ module problem_class
     type (tp_type) :: tp
     type (features_type) :: features
     type (rk45_type) :: rk45
+    type (rk45_2_type) :: rk45_2
+    type (test_type) :: test
   end type problem_type
 
 end module problem_class
